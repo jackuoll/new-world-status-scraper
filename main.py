@@ -14,10 +14,6 @@ STATUS_MAP = {
     "ags-ServerStatus-content-responses-response-server-status--up": "up"
 }
 
-r = requests.get("https://www.newworld.com/en-us/support/server-status")
-soup = bs4.BeautifulSoup(r.text, "html.parser")
-
-
 @dataclass
 class ServerInfo:
     server_name: str
@@ -58,6 +54,9 @@ def get_server_statuses_for_region(region_soup) -> dict:
 
 @app.get("/")
 async def main():
+    r = requests.get("https://www.newworld.com/en-us/support/server-status")
+    soup = bs4.BeautifulSoup(r.text, "html.parser")
+
     region_map = get_regions(soup)
     full_response = {}
     for data_index, region_name in region_map.items():
